@@ -13,7 +13,7 @@
 # NOTE: Modify the following variables per environment to provide its corressponding value;
 #	1. DBNAME		--> Database Name
 #	2. BackupDIR	--> NFS Datapump Backup Directory
-#	3. R3MBACEPW		--> SYS user password
+#	3. R3ACEPW		--> SYS user password
 #	4. PARALLEL		--> Datapump parallelism
 #	5. TABLES		-->	Tables to export
 
@@ -59,14 +59,14 @@ export mbaceDump=${BackupDIR}/mbace_dumpfile.txt
 export EncDecDIR=${HOME}/EncryptDecrypt
 cd ${EncDecDIR}
 export R3MBACEUser=SYS
-export R3MBACEPW=`/usr/java8_64/jre/bin/java -jar $EncDecDIR/PasswordDecryptor.jar <INPUT_PASSWORD> | awk '{print $3}'`
+export R3ACEPW=`/usr/java8_64/jre/bin/java -jar $EncDecDIR/PasswordDecryptor.jar <INPUT_PASSWORD> | awk '{print $3}'`
 
 
 # Get Patition Names
 export R3MBACESchema=MBACECIBX
 export MBACETables=${TempDIR}/mbace_tables.txt
 ${ORACLE_HOME}/bin/sqlplus -S /nolog <<  EOF > ${MBACETables}
-CONNECT "${R3MBACEUser}"/${R3MBACEPW}@${DBNAME} as sysdba
+CONNECT "${R3MBACEUser}"/${R3ACEPW}@${DBNAME} as sysdba
 SET LINES 300 PAGES 5 FEEDBACK OFF HEADING OFF
 SELECT  
 	LISTAGG(TABLE_DATA,',')
@@ -120,7 +120,7 @@ export dtpmpjobname="EXPDP_${JobName}_${DATE}_${TIME}"
 export PARFILE=${ParFileDir}/${dtpmpjobname}.par
 
 cat <<EOF >  ${PARFILE}
-USERID=\"${R3MBACEUser}/${R3MBACEPW}@${DBNAME} as sysdba\"
+USERID=\"${R3MBACEUser}/${R3ACEPW}@${DBNAME} as sysdba\"
 DIRECTORY=DATABASE_BACKUP_DIR
 DUMPFILE=${dtpmpjobname}_%U.dmp
 LOGFILE=${dtpmpjobname}.log
