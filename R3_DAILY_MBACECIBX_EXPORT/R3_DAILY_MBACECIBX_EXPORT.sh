@@ -26,7 +26,7 @@ export HOME=/home/controlm
 export ORACLE_HOME=${HOME}/oracle/client/19.0.0
 export TNS_ADMIN=${ORACLE_HOME}/network/admin
 export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch:${PATH}
-export DBNAME=MBOSIDV
+export DBNAME=MBACEDV
 export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
 
 # Date and Time
@@ -34,10 +34,10 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export mbosArch="R3_MBOS_ARCH_JOB"
-export mbosJob="MBOS_EXPORT"
-export JobName="R3_DAILY_${mbosJob}"
-export ScriptDIR=${HOME}/${mbosArch}/${JobName}
+export mbaceArch="R3_MBOS_ACE_ARCH_JOB"
+export mbaceJob="MBACECIBX_EXPORT"
+export JobName="R3_DAILY_${mbaceJob}"
+export ScriptDIR=${HOME}/${mbaceArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
 export LogDIR=${ScriptDIR}/logs
@@ -59,19 +59,19 @@ printf "\n\n"
 
 ############## Cleanup files
 CLEANUP(){
-find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +3 -exec ls -ltr {} \; 2>/dev/null 
-find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +3 -exec rm -f {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +3 -exec ls -ltr {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +3 -exec rm -f {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec ls -ltr {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec rm -f{} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec ls -ltr {} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec rm -f {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec ls -ltr {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec rm -f {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +15 -exec ls -ltr {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +15 -exec rm -f{} \; 2>/dev/null 
 }
 ##############
 
 
-# MBOS Log Table Backup
-printf "\n\nMBOS Log Tables are being backed up.....\n\n"
-sh ${ScriptDIR}/${mbosJob}.sh > ${LogFile}
+# MBACECIBX Log Table Backup
+printf "\n\nMBACECIBX Log Tables are being backed up.....\n\n"
+sh ${ScriptDIR}/${mbaceJob}.sh > ${LogFile}
 
 
 # Validate Error Count from logfile
