@@ -59,12 +59,12 @@ printf "\n\n"
 
 ############## Cleanup files
 CLEANUP(){
-find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec ls -ltr {} \; 2>/dev/null 
-find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec rm -f {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec ls -ltr {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +8 -exec rm -f {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +15 -exec ls -ltr {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +15 -exec rm -f{} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +7 -exec ls -ltr {} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "EXPDP_${JobName}*" -mtime +7 -exec rm -f {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +7 -exec ls -ltr {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "EXPDP_${JobName}*" -mtime +7 -exec rm -f {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +14 -exec ls -ltr {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +14 -exec rm -f{} \; 2>/dev/null 
 }
 ##############
 

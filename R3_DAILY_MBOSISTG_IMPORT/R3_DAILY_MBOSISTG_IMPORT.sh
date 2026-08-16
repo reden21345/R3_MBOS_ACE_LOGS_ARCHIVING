@@ -34,8 +34,8 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export mbosArch="R3_MBOS_ARCH_JOB"
-export mbosJob="MBOS_IMPORT"
+export mbosArch="R3_MBOS_ACE_ARCH_JOB"
+export mbosJob="MBOSISTG_IMPORT"
 export JobName="R3_DAILY_${mbosJob}"
 export ScriptDIR=${HOME}/${mbosArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
@@ -58,18 +58,18 @@ printf "\n\n"
 
 ############## Cleanup files
 CLEANUP(){
-find "${ParFileDir}" -type f -name "IMPDP_${JobName}*" -mtime +7 -exec ls -ltr {} \; 2>/dev/null 
-find "${ParFileDir}" -type f -name "IMPDP_${JobName}*" -mtime +7 -exec rm -f {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "IMPDP_${JobName}*" -mtime +7 -exec ls -ltr {} \; 2>/dev/null 
-find "${BackupDIR}" -type f -name "IMPDP_${JobName}*" -mtime +7 -exec rm -f {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +60 -exec ls -ltr {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +60 -exec rm -f {} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "IMPDP_${JobName}*" -mtime +14 -exec ls -ltr {} \; 2>/dev/null 
+find "${ParFileDir}" -type f -name "IMPDP_${JobName}*" -mtime +14 -exec rm -f {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "IMPDP_${JobName}*" -mtime +14 -exec ls -ltr {} \; 2>/dev/null 
+find "${BackupDIR}" -type f -name "IMPDP_${JobName}*" -mtime +14 -exec rm -f {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec ls -ltr {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec rm -f {} \; 2>/dev/null 
 }
 ##############
 
 
-# MBOS Log Table Load
-printf "\n\nMBOS Log Tables are being loaded.....\n\n"
+# MBOSISTG Log Table Load
+printf "\n\nMBOSISTG Log Tables are being loaded.....\n\n"
 sh ${ScriptDIR}/${mbosJob}.sh > ${LogFile}
 
 

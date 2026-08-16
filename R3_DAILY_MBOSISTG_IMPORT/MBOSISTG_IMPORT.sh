@@ -38,26 +38,20 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export mbosArch="R3_MBOS_ARCH_JOB"
-export mbosJob="MBOS_IMPORT"
+export mbosArch="R3_MBOS_ACE_ARCH_JOB"
+export mbosJob="MBOSISTG_IMPORT"
 export JobName="R3_DAILY_${mbosJob}"
 export ScriptDIR=${HOME}/${mbosArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
 export BackupDIR=/DB_BACKUP/${ORADB}/export
-# export MBOSBKPDIR=/DB_BACKUP/${ORADB}/export
+export ACEBKPDIR=/DB_BACKUP/mbacedv/export
 
-
-
-export ScriptDIR=${HOME}/${mbosArch}/${JobName}
-export TempDIR=${ScriptDIR}/tmp
-export ParFileDir=${ScriptDIR}/parfiles
-export BackupDIR=/DB_BACKUP/${ORADB}/export
 
 # Temporary Files
 export impdpTempLog=${TempDIR}/impdp_mbos_offline.tmp 
 export tempParfile=${TempDIR}/parfile.tmp
-export mbosDump="${BackupDIR}/mbos_dumpfile.txt"
+export aceDump="${ACEBKPDIR}/mbace_tables.txt"
 
 # Password Encrytion
 export EncDecDIR=${HOME}/EncryptDecrypt
@@ -68,25 +62,12 @@ export R3MBOSPW=`/usr/java8_64/bin/java -jar $EncDecDIR/PasswordDecryptor.jar yK
 
 # Load
 cd ${ScriptDIR}
-export R3MBOSOnlineSchema=MBOSIUSR
-export R3MBOSOfflineSchema=MBOSIUSR_OFFLINE
-export dmpfile=`cat ${mbosDump} | grep DUMPFILE | grep .`
-export dmptbl=`cat ${mbosDump} | grep TABLES | grep .`
+export R3MBACESchema=MBACECIBX
+export R3MBOSSchema=MBOSISTG
+export dmpfile=`cat ${aceDump} | grep DUMPFILE | grep .`
+export dmptbl=`cat ${aceDump} | grep TABLES | grep .`
 export dtpmpjobname="IMPDP_${JobName}_${DATE}_${TIME}"
 export PARFILE=${ParFileDir}/${dtpmpjobname}.par
-
-# Remap Table
-# export remaptbl=$(echo "${dmptbl}" | sed 's/^TABLES=//' | tr ',' '\n' | while IFS= read -r entry; do
-#     [ -z "$entry" ] && continue
-#     schema_table=$(echo "$entry" | cut -d: -f1)
-#     partition=$(echo "$entry" | cut -d: -f2)
-#     table_name=$(echo "$schema_table" | awk -F. '{print $NF}')
-#     if [ -n "$partition" ] && [ "$partition" != "$schema_table" ]; then
-#         echo "REMAP_TABLE=${schema_table}:${partition}:${table_name}_OFFLINE"
-#     else
-#         echo "REMAP_TABLE=${schema_table}:${table_name}_OFFLINE"
-#     fi
-# done)
 
 
 cat <<EOF >  ${PARFILE}
@@ -101,8 +82,8 @@ METRICS=YES
 ENCRYPTION_PASSWORD=Welcome123
 CONTENT=DATA_ONLY
 TABLE_EXISTS_ACTION=APPEND
-REMAP_SCHEMA=${R3MBOSOnlineSchema}:${R3MBOSOfflineSchema}
-REMAP_TABLESPACE=${R3MBOSOnlineSchema}:${R3MBOSOfflineSchema}_OFFLINE
+REMAP_SCHEMA=${R3MBACESchema}:${R3MBOSSchema}
+REMAP_TABLESPACE=${R3MBACESchema}:${R3MBOSSchema}
 EOF
 
 # Mask SYS Password
@@ -110,10 +91,9 @@ cat ${PARFILE} | sed 's/\(.*\/\).*\(@.*\)/\1********\2/' > ${tempParfile}
 
 impdp parfile=${PARFILE} > ${impdpTempLog} 2>&1
 
-cat ${BackupDIR}/${dtpmpjobname}.log
+cat ${ACEBKPDIR}/${dtpmpjobname}.log
 
 cp -p ${tempParfile} ${PARFILE} 
 cp -p ${PARFILE}  ${BackupDIR}
-mv ${BackupDIR}/${dtpmpjobname}.log ${BackupDIR}
-
+mv ${ACEBKPDIR}/${dtpmpjobname}.log ${BackupDIR}
 
