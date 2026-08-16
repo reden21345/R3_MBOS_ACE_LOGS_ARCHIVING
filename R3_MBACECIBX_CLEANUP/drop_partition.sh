@@ -28,7 +28,7 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export ScriptDIR=${HOME}/${mbaceArch}/${JobName}
+export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
 export TempDIR=${ScriptDIR}/tmp
 export RBLD_INDX_DIR=${ScriptDIR}/REBUILD_INDEX
 

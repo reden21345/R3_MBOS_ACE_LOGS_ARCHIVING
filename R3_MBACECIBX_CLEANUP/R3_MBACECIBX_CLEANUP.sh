@@ -29,9 +29,9 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export mbaceArch="R3_MBOS_ACE_ARCH_JOB"
+export mbosAceArch="R3_MBOS_ACE_ARCH_JOB"
 export JobName="R3_MBACECIBX_CLEANUP"
-export ScriptDIR=${HOME}/${mbaceArch}/${JobName}
+export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
 export BackupDIR=/DB_BACKUP/${ORADB}/export

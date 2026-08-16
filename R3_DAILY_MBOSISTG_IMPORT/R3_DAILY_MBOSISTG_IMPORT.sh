@@ -34,10 +34,10 @@ export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export mbosArch="R3_MBOS_ACE_ARCH_JOB"
+export mbosAceArch="R3_MBOS_ACE_ARCH_JOB"
 export mbosJob="MBOSISTG_IMPORT"
 export JobName="R3_DAILY_${mbosJob}"
-export ScriptDIR=${HOME}/${mbosArch}/${JobName}
+export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
 export LogDIR=${ScriptDIR}/logs
