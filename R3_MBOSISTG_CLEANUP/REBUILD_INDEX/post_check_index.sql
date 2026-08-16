@@ -18,8 +18,8 @@ col status for a13
 
 SELECT owner,index_name,tablespace_name,status 
 FROM dba_indexes 
-WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE')
-AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID' and owner = 'MBOSIUSR_OFFLINE';
+WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT')
+AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID' and owner = 'MBOSISTG';
 
 
 
@@ -38,6 +38,6 @@ col status for a15
 SELECT index_owner,index_name,partition_name,tablespace_name,status 
 FROM dba_ind_partitions WHERE index_name 
 IN (SELECT index_name FROM dba_indexes 
-WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE')
-AND partitioned = 'YES' AND index_type <> 'LOB' AND status <> 'USABLE' and owner = 'MBOSIUSR_OFFLINE');
+WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT')
+AND partitioned = 'YES' AND index_type <> 'LOB' AND status <> 'USABLE' and owner = 'MBOSISTG');
 

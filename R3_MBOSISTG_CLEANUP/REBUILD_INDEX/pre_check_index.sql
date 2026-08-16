@@ -18,8 +18,8 @@ col status for a13
 
 SELECT owner,index_name,tablespace_name,status 
 FROM dba_indexes 
-WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE')
-AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID' and owner = 'MBOSIUSR_OFFLINE';
+WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT')
+AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID' and owner = 'MBOSISTG';
 
 
 
@@ -38,8 +38,8 @@ col status for a15
 SELECT index_owner,index_name,partition_name,tablespace_name,status 
 FROM dba_ind_partitions WHERE index_name 
 IN (SELECT index_name FROM dba_indexes 
-WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE')
-AND partitioned = 'YES' AND index_type <> 'LOB' AND status <> 'USABLE' and owner = 'MBOSIUSR_OFFLINE');
+WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT')
+AND partitioned = 'YES' AND index_type <> 'LOB' AND status <> 'USABLE' and owner = 'MBOSISTG');
 
 
 prompt
@@ -55,9 +55,9 @@ set trimspool on
 
 --REBUILD INDEX
 spool rebuild_index.sql
-SELECT 'ALTER INDEX '||owner||'.'||index_name||' REBUILD ONLINE TABLESPACE '||tablespace_name||';' FROM dba_indexes WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE') and owner = 'MBOSIUSR_OFFLINE' AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID';
+SELECT 'ALTER INDEX '||owner||'.'||index_name||' REBUILD ONLINE TABLESPACE '||tablespace_name||';' FROM dba_indexes WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT') and owner = 'MBOSISTG' AND partitioned = 'NO' AND index_type <> 'LOB' AND status <> 'VALID';
 
 
 
 --REBUILD INDEX PARTITION
-SELECT 'ALTER INDEX '||index_owner||'.'||index_name||' REBUILD PARTITION '||partition_name||' TABLESPACE '||tablespace_name||' ONLINE;' FROM dba_ind_partitions WHERE index_name IN (SELECT index_name FROM dba_indexes WHERE table_name IN ('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE') and index_owner = 'MBOSIUSR_OFFLINE' AND partitioned = 'YES' AND index_type <> 'LOB') and index_owner = 'MBOSIUSR_OFFLINE' AND status <> 'USABLE';
+SELECT 'ALTER INDEX '||index_owner||'.'||index_name||' REBUILD PARTITION '||partition_name||' TABLESPACE '||tablespace_name||' ONLINE;' FROM dba_ind_partitions WHERE index_name IN (SELECT index_name FROM dba_indexes WHERE table_name IN ('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT') and index_owner = 'MBOSISTG' AND partitioned = 'YES' AND index_type <> 'LOB') and index_owner = 'MBOSISTG' AND status <> 'USABLE';

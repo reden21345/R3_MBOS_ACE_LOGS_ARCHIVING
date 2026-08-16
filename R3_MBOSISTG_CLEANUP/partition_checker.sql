@@ -5,8 +5,8 @@ DECLARE
     v_high_value_date   DATE;
     v_date_str          VARCHAR2(20);
     v_table_name        VARCHAR2(255);
-	v_owner_name		VARCHAR2(20) := 'MBOSIUSR_OFFLINE';
-    v_tables            SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE');
+	v_owner_name		VARCHAR2(20) := 'MBOSISTG';
+    v_tables            SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT');
 	v_partition_name    VARCHAR2(20);
 	v_sql               VARCHAR2(1000);
 	v_row_count         NUMBER;

@@ -5,9 +5,9 @@ DECLARE
     v_high_value 			VARCHAR2(4000);
     v_high_value_date 		DATE;
     v_date_str 				VARCHAR2(20);
-	v_owner_name        	VARCHAR2(30) := 'MBOSIUSR_OFFLINE' ;
+	v_owner_name        	VARCHAR2(30) := 'MBOSISTG' ;
     v_table_name 			VARCHAR2(255);
-    v_tables 				SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('MB_AUDIT_OFFLINE','MB_DAILY_SYNC_LOGS_OFFLINE','API_LOG_OFFLINE');
+    v_tables 				SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('ACE_INTERFACE_LOG_ENTRY','ACE_INTERFACE_LOG_EXIT');
     v_partitions_dropped  	NUMBER := 0;  
 
 BEGIN
