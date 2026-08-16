@@ -1,0 +1,69 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration
+*.local
+config.local
+settings.local
+
+# Logs
+*.log
+*.out
+
+# Parfiles
+*.par
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.#*
+
+# Shell script generated files
+*.bak
+*.orig
+*.pid
+*.lock
+
+# Runtime/output directories
+tmp/
+parfiles/
+logs/
+Backup/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Shell history
+.history
+bash_history
+zsh_history
+
+# Test coverage / reports
+coverage/
+reports/
+
+# Credentials / keys
+*.pem
+*.key
+*.crt
+credentials/
+secrets/
+
+# Local virtual environments
+.venv/
+venv/
+
+# Keep example configuration files
+!.env.example
+!config.example
