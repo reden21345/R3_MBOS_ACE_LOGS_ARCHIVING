@@ -7,7 +7,7 @@
 #######################################################################################################################
 #REDMINE        AUTHOR/S                DATE                    VERSION         REMARKS                               #
 #######################################################################################################################
-#FF				Reden Mirandilla        August 2026				1.0				Initial Version. 
+#148998			Reden Mirandilla        August 2026				1.0				Initial Version. 
 #######################################################################################################################
 
 # NOTE: Modify the following variables per environment to provide its corressponding value;
@@ -27,11 +27,23 @@ printf "\n\n"
 
 # Environment Variables
 export HOME=/home/controlm
-export ORACLE_HOME=${HOME}/oracle/client/19.0.0
-export TNS_ADMIN=${ORACLE_HOME}/network/admin
-export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch:${PATH}
+#export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export TNS_ADMIN=${ORACLE_HOME}/network/admin
 export DBNAME=MBOSIDV
-export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:] | sed 's/.$//'`
+#export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
+#export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+#export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+#export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+#export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+
+export ORACLE_BASE=/u01/app/mbosidv
+export ORACLE_HOME=${ORACLE_BASE}/product/19.0.0/dbhome_1
+export ORACLE_SID=mbosidv
+export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:${PATH}
+export TNS_ADMIN=${ORACLE_HOME}/network/admin
+export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/lib:/usr/lib
+export CLASSPATH=${ORACLE_HOME}/JRE:${ORACLE_HOME}/jlib:$ORACLE_HOME/rdbms/jlib	
 
 # Date and Time
 export DATE=`date '+%Y%m%d'`
@@ -44,7 +56,7 @@ export JobName="R3_DAILY_${mbosJob}"
 export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
-export BackupDIR=/DB_BACKUP/${ORADB}/export
+export BackupDIR=/DB_BACKUP/${ORACLE_SID}/export
 export ACEBKPDIR=/DB_BACKUP/mbacedv/export
 
 
