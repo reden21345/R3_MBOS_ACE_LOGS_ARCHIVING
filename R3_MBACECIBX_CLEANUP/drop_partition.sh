@@ -17,18 +17,30 @@
 
 # Environment Variables
 export HOME=/home/controlm
-export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export TNS_ADMIN=${ORACLE_HOME}/network/admin
+export DBNAME=MBACE2DV
+#export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
+#export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+#export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+#export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+#export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+
+export ORACLE_BASE=/u01/app/mbace2dv
+export ORACLE_HOME=${ORACLE_BASE}/product/19.0.0/dbhome_1
+export ORACLE_SID=mbace2dv
+export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:${PATH}
 export TNS_ADMIN=${ORACLE_HOME}/network/admin
-export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch:${PATH}
-export DBNAME=MBACEDV
-export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:] | sed 's/.$//'`
+export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/lib:/usr/lib
+export CLASSPATH=${ORACLE_HOME}/JRE:${ORACLE_HOME}/jlib:$ORACLE_HOME/rdbms/jlib
 
 # Date and Time
 export DATE=`date '+%Y%m%d'`
 export TIME=`date '+%H%M%S'`
 
 # Directories
-export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
+export ScriptDIR=${HOME}/TaskController/${mbosAceArch}/${JobName}
 export TempDIR=${ScriptDIR}/tmp
 export RBLD_INDX_DIR=${ScriptDIR}/REBUILD_INDEX
 
@@ -36,7 +48,7 @@ export RBLD_INDX_DIR=${ScriptDIR}/REBUILD_INDEX
 export EncDecDIR=${HOME}/EncryptDecrypt
 cd ${EncDecDIR}
 export R3ACEUser=SYS
-export R3ACEPW=`/usr/java8_64/bin/java -jar $EncDecDIR/PasswordDecryptor.jar <INPUT_PASSWORD> | awk '{print $3}'`
+export R3ACEPW=`/usr/java8_64/bin/java -jar $EncDecDIR/PasswordDecryptor.jar fM9Bot7FAmMbuGn39i3vErANvWRCvyyu | awk '{print $3}'`
 
 # Pre-Check
 ${ORACLE_HOME}/bin/sqlplus -S "${R3ACEUser}"/"${R3ACEPW}"@${DBNAME} as sysdba <<EOF

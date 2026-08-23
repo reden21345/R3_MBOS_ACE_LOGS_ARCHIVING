@@ -18,11 +18,23 @@
 
 # Environment Variables
 export HOME=/home/controlm
-export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export TNS_ADMIN=${ORACLE_HOME}/network/admin
+export DBNAME=MBACE2DV
+#export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
+#export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+#export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+#export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+#export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+
+export ORACLE_BASE=/u01/app/mbace2dv
+export ORACLE_HOME=${ORACLE_BASE}/product/19.0.0/dbhome_1
+export ORACLE_SID=mbace2dv
+export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:${PATH}
 export TNS_ADMIN=${ORACLE_HOME}/network/admin
-export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch:${PATH}
-export DBNAME=MBACEDV
-export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:] | sed 's/.$//'`
+export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/lib:/usr/lib
+export CLASSPATH=${ORACLE_HOME}/JRE:${ORACLE_HOME}/jlib:$ORACLE_HOME/rdbms/jlib
 
 # Date and Time
 export DATE=`date '+%Y%m%d'`
@@ -31,20 +43,20 @@ export TIME=`date '+%H%M%S'`
 # Directories
 export mbosAceArch="R3_MBOS_ACE_ARCH_JOB"
 export JobName="R3_MBACECIBX_CLEANUP"
-export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
+export ScriptDIR=${HOME}/TaskController/${mbosAceArch}/${JobName}
 export ParFileDir=${ScriptDIR}/parfiles
 export TempDIR=${ScriptDIR}/tmp
-export BackupDIR=/DB_BACKUP/${ORADB}/export
+export BackupDIR=/DB_BACKUP/${ORACLE_SID}/export
 export LogDIR=${ScriptDIR}/logs
 export LogFile=${LogDIR}/${JobName}_${DATE}_${TIME}.log
 export checkpartition=${TempDIR}/checkpartition.tmp
-# export ACEBKPDIR=/DB_BACKUP/${ORADB}/export
+# export ACEBKPDIR=/DB_BACKUP/${ORACLE_SID}/export
 
 # Password Encrytion
 export EncDecDIR=${HOME}/EncryptDecrypt
 cd ${EncDecDIR}
 export R3ACEUser=SYS
-export R3ACEPW=`/usr/java8_64/bin/java -jar $EncDecDIR/PasswordDecryptor.jar <INPUT_PASSWORD> | awk '{print $3}'`
+export R3ACEPW=`/usr/java8_64/bin/java -jar $EncDecDIR/PasswordDecryptor.jar fM9Bot7FAmMbuGn39i3vErANvWRCvyyu | awk '{print $3}'`
 
 
 ############## Start Time
@@ -71,8 +83,8 @@ printf "\n\n"
 
 ############## Cleanup files
 CLEANUP(){
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +60 -exec ls -ltr {} \; 2>/dev/null 
-find "${LogDIR}" -type f -name "${JobName}*" -mtime +60 -exec rm -f {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec ls -ltr {} \; 2>/dev/null 
+find "${LogDIR}" -type f -name "${JobName}*" -mtime +30 -exec rm -f {} \; 2>/dev/null 
 }
 ##############
 
