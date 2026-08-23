@@ -7,7 +7,7 @@
 #######################################################################################################################
 #REDMINE        AUTHOR/S                DATE                    VERSION         REMARKS                               #
 #######################################################################################################################
-#FF				Reden Mirandilla        August 2026				1.0				Initial Version. 
+#148998			Reden Mirandilla        August 2026				1.0				Initial Version. 
 #######################################################################################################################
 
 # NOTE: Modify the following variables per environment to provide its corressponding value;
@@ -27,11 +27,23 @@ printf "\n\n"
 
 # Environment Variables
 export HOME=/home/controlm
-export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export ORACLE_HOME=${HOME}/oracle/client/19.0.0
+#export TNS_ADMIN=${ORACLE_HOME}/network/admin
+export DBNAME=MBACE2DV
+#export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
+#export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+#export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+#export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+#export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+
+export ORACLE_BASE=/u01/app/mbace2dv
+export ORACLE_HOME=${ORACLE_BASE}/product/19.0.0/dbhome_1
+export ORACLE_SID=mbace2dv
+export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:${PATH}
 export TNS_ADMIN=${ORACLE_HOME}/network/admin
-export PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch:${PATH}
-export DBNAME=MBACEDV
-export ORADB=`echo ${DBNAME} | tr [:upper:] [:lower:]`
+export LIBPATH=$ORACLE_HOME/lib:$LIBPATH
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/lib:/usr/lib
+export CLASSPATH=${ORACLE_HOME}/JRE:${ORACLE_HOME}/jlib:$ORACLE_HOME/rdbms/jlib
 
 # TABLES
 export ENTRY_TABLE=ACE_INTERFACE_LOG_ENTRY
@@ -45,10 +57,10 @@ export TIME=`date '+%H%M%S'`
 export mbosAceArch="R3_MBOS_ACE_ARCH_JOB"
 export mbaceJob="MBACECIBX_EXPORT"
 export JobName="R3_DAILY_${mbaceJob}"
-export ScriptDIR=${HOME}/${mbosAceArch}/${JobName}
+export ScriptDIR=${HOME}/TaskController/${mbosAceArch}/${JobName}
 export TempDIR=${ScriptDIR}/tmp
 export ParFileDir=${ScriptDIR}/parfiles
-export BackupDIR=/DB_BACKUP/${ORADB}/export
+export BackupDIR=/DB_BACKUP/${ORACLE_SID}/export
 
 # Temporary Files
 export expdpTempLog=${TempDIR}/expdp_mbace.tmp 
@@ -59,15 +71,15 @@ export mbaceDump=${BackupDIR}/mbace_dumpfile.txt
 export EncDecDIR=${HOME}/EncryptDecrypt
 cd ${EncDecDIR}
 export R3MBACEUser=SYS
-export R3ACEPW=`/usr/java8_64/jre/bin/java -jar $EncDecDIR/PasswordDecryptor.jar <INPUT_PASSWORD> | awk '{print $3}'`
+export R3ACEPW=`/usr/java8_64/jre/bin/java -jar $EncDecDIR/PasswordDecryptor.jar fM9Bot7FAmMbuGn39i3vErANvWRCvyyu | awk '{print $3}'`
 
 
 # Get Patition Names
-export R3MBACESchema=MBACECIBX
+export R3ACESchema=MBACECIBX
 export MBACETables=${TempDIR}/mbace_tables.txt
 ${ORACLE_HOME}/bin/sqlplus -S /nolog <<  EOF > ${MBACETables}
 CONNECT "${R3MBACEUser}"/${R3ACEPW}@${DBNAME} as sysdba
-SET LINES 300 PAGES 5 FEEDBACK OFF HEADING OFF
+SET LINES 30000 PAGES 1 FEEDBACK OFF HEADING OFF
 SELECT  
 	LISTAGG(TABLE_DATA,',')
 		WITHIN GROUP (
@@ -91,10 +103,8 @@ FROM (
 						, PARTITION_NAME
 						, HIGH_VALUE 
 					FROM DBA_TAB_PARTITIONS 
-					WHERE TABLE_OWNER = ''${R3MBACESchema}'' 
-					AND TABLE_NAME IN (
-					''${ENTRY_TABLE}'',
-					''${EXIT_TABLE}''
+					WHERE TABLE_OWNER = ''${R3ACESchema}'' 
+					AND TABLE_NAME IN (''${ENTRY_TABLE}'',''${EXIT_TABLE}'')'
 					) AS XML_DATA 
 			FROM DUAL),
 		XMLTABLE('/ROWSET/ROW'
@@ -107,7 +117,7 @@ FROM (
 		) TBL
 	)
 )
-WHERE HIGH_VALUE = TRUNC(SYSDATE);
+WHERE HIGH_VALUE < TRUNC(SYSDATE) - 6;
 PROMPT
 EOF
 
